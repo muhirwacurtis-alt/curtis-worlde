@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Curtis World | Gaming Arena</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --gold: #f5c542;
+    --gold-light: #ffe59a;
+    --black: #090909;
+    --card: #151515;
+    --text: #ffffff;
+    --muted: #aaaaaa;
+}
+
+body {
+    background: var(--black);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 7%;
+    border-bottom: 1px solid #292929;
+    background: #0d0d0d;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.logo {
+    color: var(--gold);
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+nav {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+nav a:hover {
+    color: var(--gold);
+}
+
+.hero {
+    text-align: center;
+    padding: 75px 20px;
+    background:
+        radial-gradient(ellipse at top, #392b0b 0%, #171207 35%, #090909 75%);
+}
+
+.tag {
+    display: inline-block;
+    border: 1px solid #8f7220;
+    color: var(--gold);
+    border-radius: 30px;
+    padding: 9px 15px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    font-size: clamp(35px, 7vw, 68px);
+    line-height: 1.15;
+    margin-bottom: 20px;
+}
+
+.gold {
+    color: var(--gold);
+}
+
+.hero p {
+    color: #bdbdbd;
+    line-height: 1.8;
+    max-width: 520px;
+    margin: auto;
+}
+
+.button {
+    display: inline-block;
+    margin-top: 28px;
+    padding: 14px 25px;
+    border-radius: 5px;
+    background: var(--gold);
+    color: #111;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.button:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 55px;
+    padding: 25px 15px;
+    background: #101010;
+    border-top: 1px solid #292929;
+    border-bottom: 1px solid #292929;
+    flex-wrap: wrap;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat strong {
+    display: block;
+    color: var(--gold);
+    font-size: 23px;
+    margin-bottom: 5px;
+}
+
+.stat span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.section {
+    padding: 55px 7%;
+}
+
+.section-title {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.section-description {
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+}
+
+.game-card {
+    position: relative;
+    background: linear-gradient(145deg, #1c1c1c, #101010);
+    border: 1px solid #303030;
+    border-radius: 12px;
+    padding: 26px;
+    transition: 0.25s;
+}
+
+.game-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--gold);
+    box-shadow: 0 10px 35px #00000070;
+}
+
+.game-icon {
+    width: 70px;
+    height: 70px;
+    display: grid;
+    place-items: center;
+    font-size: 38px;
+    border-radius: 12px;
+    background: #30260d;
+    margin-bottom: 22px;
+}
+
+.badge {
+    display: inline-block;
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.game-card h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.game-card p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 48px;
+}
+
+.game-card .button {
+    width: 100%;
+    margin-top: 22px;
+}
+
+.game-area {
+    display: none;
+    margin-top: 35px;
+    padding: 30px;
+    background: #141414;
+    border: 1px solid #8f7220;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.game-area.active {
+    display: block;
+}
+
+.game-area h3 {
+    color: var(--gold);
+    font-size: 25px;
+    margin-bottom: 18px;
+}
+
+.game-area p {
+    color: #ddd;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+.game-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.game-buttons button,
+.choice-button {
+    background: #222;
+    border: 1px solid #65511b;
+    color: white;
+    padding: 13px 19px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.game-buttons button:hover,
+.choice-button:hover {
+    background: var(--gold);
+    color: #111;
+}
+
+.result {
+    margin-top: 20px;
+    font-size: 17px;
+    color: var(--gold);
+    min-height: 28px;
+}
+
+.score-line {
+    color: var(--gold);
+    margin-top: 15px;
+}
+
+footer {
+    text-align: center;
+    padding: 30px 15px;
+    border-top: 1px solid #292929;
+    color: #888;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+    header {
+        justify-content: center;
+        text-align: center;
+    }
+
+    nav {
+        justify-content: center;
+        gap: 17px;
+    }
+
+    .hero {
+        padding: 60px 18px;
+    }
+
+    .section {
+        padding: 40px 20px;
+    }
+
+    .stats {
+        gap: 28px;
+    }
+
+    .game-area {
+        padding: 20px 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">👑 CURTIS WORLD</div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#games">Games</a>
+        <a href="#about">About</a>
+    </nav>
+</header>
+
+<section class="hero" id="home">
+    <div class="tag">YOUR ENTERTAINMENT UNIVERSE</div>
+
+    <h1>READY TO <span class="gold">PLAY?</span></h1>
+
+    <p>
+        Discover fun challenges, test your skills,
+        and compete for your personal best.
+        Welcome to the Curtis World Gaming Arena.
+    </p>
+
+    <a href="#games" class="button">EXPLORE GAMES 🎮</a>
+</section>
+
+<div class="stats">
+    <div class="stat">
+        <strong>03</strong>
+        <span>MINI-GAMES</span>
+    </div>
+
+    <div class="stat">
+        <strong id="totalScore">0</strong>
+        <span>YOUR POINTS</span>
+    </div>
+
+    <div class="stat">
+        <strong>🇷🇼</strong>
+        <span>BUILT IN RWANDA</span>
+    </div>
+</div>
+
+<section class="section" id="games">
+    <h2 class="section-title">THE <span class="gold">ARENA</span></h2>
+
+    <p class="section-description">
+        Pick your challenge. Play, learn, and beat your best score.
+    </p>
+
+    <div class="game-grid">
+
+        <div class="game-card">
+            <div class="game-icon">🧠</div>
+            <div class="badge">KNOWLEDGE CHALLENGE</div>
+            <h3>Brain Challenge</h3>
+            <p>Answer questions and test what you know.</p>
+            <button class="button" onclick="openGame('quiz')">
+                PLAY GAME →
+            </button>
+            <div class="game-card">
+    <div class="game-icon">🧱</div>
+    <div class="badge">ARCADE CHALLENGE</div>
+    <h3>Gold Breaker</h3>
+    <p>Break golden bricks, control the paddle, and beat your high score!</p>
+
+    <button class="button" onclick="openGame('breaker')">
+        PLAY GAME →
+    </button>
+</div>
+        </div>
+
+        <div class="game-card">
+            <div class="game-icon">🔢</div>
+            <div class="badge">GUESSING CHALLENGE</div>
+            <h3>Number Guess</h3>
+            <p>Find the secret number between 1 and 10.</p>
+            <button class="button" onclick="openGame('number')">
+                PLAY GAME →
+            </button>
+        </div>
+
+        <div class="game-card">
+            <div class="game-icon">✂️</div>
+            <div class="badge">CLASSIC CHALLENGE</div>
+            <h3>Rock Paper Scissors</h3>
+            <p>Challenge the computer in a classic showdown.</p>
+            <button class="button" onclick="openGame('rps')">
+                PLAY GAME →
+            </button>
+        </div>
+
+    </div>
+
+    <div class="game-area" id="gameArea">
+        <h3 id="gameTitle">Game</h3>
+        <div id="gameContent"></div>
+        <div class="result" id="result"></div>
+        <div class="score-line" id="scoreLine">Points: 0</div>
+
+        <button class="button" onclick="closeGame()">
+            CLOSE GAME
+        </button>
+    </div>
+</section>
+
+<section class="section" id="about">
+    <h2 class="section-title">ABOUT <span class="gold">US</span></h2>
+
+    <p class="section-description">
+        Curtis World is an entertainment project being built in Rwanda.
+        Our vision is to bring games and other fun digital experiences
+        together in one place.
+    </p>
+</section>
+
+<footer>
+    <p>© 2026 Curtis World 🇷🇼</p>
+    <p>Created with ambition. More features coming soon.</p>
+</footer>
+
+<script>
+let totalScore = 0;
+let currentScore = 0;
+let secretNumber = 0;
+let quizIndex = 0;
+let rpsRounds = 0;
+
+const questions = [
+    {
+        question: "What is the capital city of Rwanda?",
+        options: ["A. Kigali", "B. Huye", "C. Musanze"],
+        answer: 0
+    },
+    {
+        question: "How many days are in a week?",
+        options: ["A. Five", "B. Seven", "C. Ten"],
+        answer: 1
+    },
+    {
+        question: "Which planet do we live on?",
+        options: ["A. Mars", "B. Venus", "C. Earth"],
+        answer: 2
+    },
+    {
+        question: "What is 8 × 7?",
+        options: ["A. 54", "B. 56", "C. 64"],
+        answer: 1
+    }
+];
+
+function openGame(game) {
+    let breakerAnimation = null;
+let breakerKeyHandler = null;
+let breakerPointerHandler = null;
+
+function moveBreaker(direction) {
+    if (window.breakerState) {
+        const s = window.breakerState;
+        s.paddleX += direction * 35;
+
+        s.paddleX = Math.max(
+            0,
+            Math.min(s.width - s.paddleWidth, s.paddleX)
+        );
+    }
+}
+
+function startGoldBreaker() {
+    if (breakerAnimation) {
+        cancelAnimationFrame(breakerAnimation);
+        breakerAnimation = null;
+    }
+
+    if (breakerKeyHandler) {
+        window.removeEventListener("keydown", breakerKeyHandler);
+    }
+
+    const canvas = document.getElementById("breakerCanvas");
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+
+    const s = {
+        width: canvas.width,
+        height: canvas.height,
+        ballX: 240,
+        ballY: 250,
+        ballDX: 3,
+        ballDY: -3,
+        ballRadius: 7,
+        paddleX: 190,
+        paddleY: 290,
+        paddleWidth: 100,
+        paddleHeight: 10,
+        bricks: [],
+        score: 0,
+        running: true
+    };
+
+    window.breakerState = s;
+
+    const columns = 7;
+    const rows = 3;
+    const brickWidth = 54;
+    const brickHeight = 17;
+    const gap = 8;
+    const startX = 24;
+    const startY = 35;
+
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < columns; col++) {
+            s.bricks.push({
+                x: startX + col * (brickWidth + gap),
+                y: startY + row * (brickHeight + gap),
+                width: brickWidth,
+                height: brickHeight,
+                alive: true
+            });
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, s.width, s.height);
+
+        ctx.fillStyle = "#080808";
+        ctx.fillRect(0, 0, s.width, s.height);
+
+        ctx.fillStyle = "#f5c542";
+        ctx.font = "bold 15px Arial";
+        ctx.fillText("SCORE: " + s.score, 12, 20);
+
+        s.bricks.forEach(brick => {
+            if (!brick.alive) return;
+
+            ctx.fillStyle = "#f5c542";
+            ctx.fillRect(
+                brick.x, brick.y,
+                brick.width, brick.height
+            );
+
+            ctx.strokeStyle = "#ffe59a";
+            ctx.strokeRect(
+                brick.x, brick.y,
+                brick.width, brick.height
+            );
+        });
+
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.arc(
+            s.ballX, s.ballY,
+            s.ballRadius, 0, Math.PI * 2
+        );
+        ctx.fill();
+
+        ctx.fillStyle = "#f5c542";
+        ctx.fillRect(
+            s.paddleX, s.paddleY,
+            s.paddleWidth, s.paddleHeight
+        );
+    }
+
+    function endGame(message) {
+        s.running = false;
+        draw();
+
+        ctx.fillStyle = "#f5c542";
+        ctx.textAlign = "center";
+        ctx.font = "bold 24px Arial";
+        ctx.fillText(message, s.width / 2, 170);
+
+        ctx.font = "16px Arial";
+        ctx.fillText(
+            "Score: " + s.score,
+            s.width / 2, 200
+        );
+        ctx.textAlign = "left";
+
+        document.getElementById("breakerStatus").textContent =
+            message + " Final score: " + s.score;
+    }
+
+    function update() {
+        if (!s.running) return;
+
+        s.ballX += s.ballDX;
+        s.ballY += s.ballDY;
+
+        if (s.ballX < s.ballRadius ||
+            s.ballX > s.width - s.ballRadius) {
+            s.ballDX *= -1;
+        }
+
+        if (s.ballY < s.ballRadius) {
+            s.ballDY *= -1;
+        }
+
+        const hitsPaddle =
+            s.ballY + s.ballRadius >= s.paddleY &&
+            s.ballY - s.ballRadius <= s.paddleY + s.paddleHeight &&
+            s.ballX >= s.paddleX &&
+            s.ballX <= s.paddleX + s.paddleWidth &&
+            s.ballDY > 0;
+
+        if (hitsPaddle) {
+            s.ballDY = -Math.abs(s.ballDY);
+            s.ballDX +=
+                ((s.ballX - (s.paddleX + s.paddleWidth / 2)) /
+                (s.paddleWidth / 2)) * 1.2;
+        }
+
+        for (const brick of s.bricks) {
+            if (!brick.alive) continue;
+
+            if (
+                s.ballX + s.ballRadius > brick.x &&
+                s.ballX - s.ballRadius < brick.x + brick.width &&
+                s.ballY + s.ballRadius > brick.y &&
+                s.ballY - s.ballRadius < brick.y + brick.height
+            ) {
+                brick.alive = false;
+                s.ballDY *= -1;
+                s.score += 10;
+                break;
+            }
+        }
+
+        if (s.bricks.every(brick => !brick.alive)) {
+            endGame("YOU WIN!");
+            document.getElementById("breakerStatus").textContent =
+                "Amazing! You broke every brick!";
+            return;
+        }
+
+        if (s.ballY > s.height) {
+            endGame("GAME OVER");
+            return;
+        }
+
+        draw();
+        breakerAnimation = requestAnimationFrame(update);
+    }
+
+    breakerKeyHandler = function(event) {
+        if (!s.running) return;
+
+        if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            moveBreaker(-1);
+        }
+
+        if (event.key === "ArrowRight") {
+            event.preventDefault();
+            moveBreaker(1);
+        }
+    };
+
+    window.addEventListener("keydown", breakerKeyHandler);
+
+    canvas.onpointermove = function(event) {
+        if (!s.running) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const scale = canvas.width / rect.width;
+        const pointerX = (event.clientX - rect.left) * scale;
+
+        s.paddleX = pointerX - s.paddleWidth / 2;
+        s.paddleX = Math.max(
+            0,
+            Math.min(s.width - s.paddleWidth, s.paddleX)
+        );
+    };
+
+    document.getElementById("breakerStatus").textContent =
+        "Break the bricks! Each brick earns 10 points.";
+
+    draw();
+    breakerAnimation = requestAnimationFrame(update);
+}
+    const area = document.getElementById("gameArea");
+    const title = document.getElementById("gameTitle");
+    const content = document.getElementById("gameContent");
+    const result = document.getElementById("result");
+
+    area.classList.add("active");
+    if (game === "breaker") {
+    title.textContent = "🧱 Gold Breaker";
+
+    content.innerHTML = `
+        <p>Move the paddle with your mouse or arrow keys.</p>
+
+        <canvas
+            id="breakerCanvas"
+            width="480"
+            height="320"
+            style="width:100%;max-width:480px;background:#080808;
+                   border:1px solid #f5c542;border-radius:8px;
+                   touch-action:none;">
+        </canvas>
+
+        <p id="breakerStatus">Break the golden bricks!</p>
+
+        <div class="game-buttons">
+            <button onclick="moveBreaker(-1)">⬅ LEFT</button>
+            <button onclick="moveBreaker(1)">RIGHT ➡</button>
+        </div>
+
+        <button class="button" onclick="startGoldBreaker()">
+            RESTART GAME
+        </button>
+    `;
+
+    startGoldBreaker();
+    area.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+}
+    result.textContent = "";
+    currentScore = 0;
+    document.getElementById("scoreLine").textContent = "Points: 0";
+
+    if (game === "quiz") {
+        title.textContent = "🧠 Brain Challenge";
+        quizIndex = 0;
+        showQuestion();
+    }
+
+    if (game === "number") {
+        title.textContent = "🔢 Number Guess";
+        secretNumber = Math.floor(Math.random() * 10) + 1;
+
+        content.innerHTML = `
+            <p>I'm thinking of a number between 1 and 10.</p>
+            <p>Choose your guess:</p>
+            <div class="game-buttons">
+                ${[1,2,3,4,5,6,7,8,9,10].map(n =>
+                    `<button onclick="guessNumber(${n})">${n}</button>`
+                ).join("")}
+            </div>
+        `;
+    }
+
+    if (game === "rps") {
+        title.textContent = "✂️ Rock Paper Scissors";
+        rpsRounds = 0;
+
+        content.innerHTML = `
+            <p>Choose your move!</p>
+            <div class="game-buttons">
+                <button onclick="playRPS('rock')">🪨 Rock</button>
+                <button onclick="playRPS('paper')">📄 Paper</button>
+                <button onclick="playRPS('scissors')">✂️ Scissors</button>
+            </div>
+            <p id="rounds">Rounds played: 0</p>
+        `;
+    }
+
+    area.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function updateScore(points) {
+    currentScore += points;
+    totalScore += points;
+
+    document.getElementById("scoreLine").textContent =
+        "Game points: " + currentScore;
+
+    document.getElementById("totalScore").textContent = totalScore;
+}
+
+function showQuestion() {
+    const content = document.getElementById("gameContent");
+    const result = document.getElementById("result");
+
+    if (quizIndex >= questions.length) {
+        content.innerHTML = `
+            <p>You've completed the Brain Challenge!</p>
+            <button class="button" onclick="openGame('quiz')">
+                PLAY AGAIN
+            </button>
+        `;
+
+        result.textContent = "Challenge complete! 🎉";
+        return;
+    }
+
+    const q = questions[quizIndex];
+
+    content.innerHTML = `
+        <p>Question ${quizIndex + 1} of ${questions.length}</p>
+        <p><strong>${q.question}</strong></p>
+        <div class="game-buttons">
+            ${q.options.map((option, index) =>
+                `<button onclick="answerQuestion(${index})">${option}</button>`
+            ).join("")}
+        </div>
+    `;
+
+    result.textContent = "";
+}
+
+function answerQuestion(answer) {
+    if (answer === questions[quizIndex].answer) {
+        updateScore(10);
+        document.getElementById("result").textContent =
+            "Correct! +10 points 🎉";
+    } else {
+        document.getElementById("result").textContent =
+            "Not quite! Keep learning 💪";
+    }
+
+    quizIndex++;
+
+    const content = document.getElementById("gameContent");
+
+    content.insertAdjacentHTML(
+        "beforeend",
+        `<button class="button" onclick="showQuestion()">NEXT QUESTION →</button>`
+    );
+}
+
+function guessNumber(guess) {
+    const result = document.getElementById("result");
+
+    if (guess === secretNumber) {
+        updateScore(10);
+        result.textContent = "🎉 Correct! +10 points!";
+
+        document.getElementById("gameContent").innerHTML = `
+            <p>You found the secret number: ${secretNumber}!</p>
+            <button class="button" onclick="openGame('number')">
+                PLAY AGAIN
+            </button>
+        `;
+    } else if (guess < secretNumber) {
+        result.textContent = "Too low! Try a higher number.";
+    } else {
+        result.textContent = "Too high! Try a lower number.";
+    }
+}
+
+function playRPS(player) {
+    const choices = ["rock", "paper", "scissors"];
+    const computer = choices[Math.floor(Math.random() * 3)];
+
+    let message;
+
+    if (player === computer) {
+        message = "It's a draw! 🤝";
+    } else if (
+        (player === "rock" && computer === "scissors") ||
+        (player === "paper" && computer === "rock") ||
+        (player === "scissors" && computer === "paper")
+    ) {
+        message = "You win this round! +10 points 🎉";
+        updateScore(10);
+    } else {
+        message = "The computer wins this round. Try again!";
+    }
+
+    rpsRounds++;
+
+    document.getElementById("result").textContent =
+        "You: " + player + " | Computer: " + computer +
+        " — " + message;
+
+    document.getElementById("rounds").textContent =
+        "Rounds played: " + rpsRounds;
+}
+
+function closeGame() {
+    if (breakerAnimation) {
+        cancelAnimationFrame(breakerAnimation);
+        breakerAnimation = null;
+    }
+
+    if (breakerKeyHandler) {
+        window.removeEventListener("keydown", breakerKeyHandler);
+        breakerKeyHandler = null;
+    }
+
+    document.getElementById("gameArea").classList.remove("active");
+}
+</script>
+
+</body>
+</html>
